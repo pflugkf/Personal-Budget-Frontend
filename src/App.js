@@ -1,24 +1,36 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
+
+import LoginPage from './LoginPage/LoginPage';
+import SignupPage from './SignupPage/SignupPage';
+import HomePage from './HomePage/HomePage';
+import DashboardPage from './DashboardPage/DashboardPage';
+import Footer from './Footer/Footer';
+
 function App() {
+  //setInterval(test, 1000);
+  function test() {
+    //console.log("I'm the app");
+    //TODO: test/validate jwt expiration time here????
+  }
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+      </Routes>
+      <Footer />
+    </Router>
+
   );
 }
 
