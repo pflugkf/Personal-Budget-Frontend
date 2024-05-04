@@ -3,14 +3,15 @@ import {
   Link
 } from "react-router-dom";
 
-import Menu from '../Menu/Menu';
-
 function HomePage() {
+  //console.log("I've been rendered!");
   return (
     <div>
-      <Menu />
-      <h1>Hello, [username]</h1>
-      <p>Welcome to Personal Budget App! To get started, select Dashboard in the navigation bar.</p>
+      <h1>Welcome to Personal Budget App!</h1>
+      <p>Log in to see your personal budget dashboard page</p>
+
+      <Link to="/login">Log in</Link>
+      <Link to="/signup">Create Account</Link>
     </div>
   );
 }

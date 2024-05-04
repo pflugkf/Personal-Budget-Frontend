@@ -13,6 +13,7 @@ function LoginPage() {
         username: document.getElementById('username').value,
         password: document.getElementById('password').value,
     };
+    
     axios.post('http://localhost:3000/api/login', data).then(res => {
         console.log(res);
         document.getElementById('username').value = '';
@@ -21,7 +22,7 @@ function LoginPage() {
             const token = res.data.token;
             localStorage.setItem('jwt', token);
             //getDashboard();
-            navigate("/home");
+            navigate("/dashboard");
         } else {
           console.log("invalid");
         }
