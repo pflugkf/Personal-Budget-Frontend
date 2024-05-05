@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react";
+import {
+  Link,
+  useNavigate
+} from "react-router-dom";
 import axios from "axios";
 import Menu from "../Menu/Menu";
 import { Chart } from "chart.js/auto";
@@ -35,8 +39,8 @@ function DashboardPage() {
           colors.push(jsonData[i].color);
         }
 
-        console.log(labels);
-        console.log(colors);
+        //console.log(labels);
+        //console.log(colors);
         console.log(data);
 
         setData({
@@ -49,27 +53,33 @@ function DashboardPage() {
           labels: labels,
         });
 
+        var maxBudgetVal = Math.max.apply(null, data);
+        var maxBudgetIndex = 0;
+        var maxBudgetLabel = "";
+
         var sum = 0;
-        for (var i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
           sum += data[i];
+
+          if(data[i] === maxBudgetVal) {
+            maxBudgetIndex = i; 
+          }
         }
 
-        console.log("Sum of all budget values: " + sum);
-        console.log("Average: " + sum / (data.length - 1));
+        maxBudgetLabel = labels[maxBudgetIndex];
+
+        //console.log("Sum of all budget values: " + sum);
+        //console.log("Average: " + sum / (data.length - 1));
 
         setCount(data.length);
 
-        /* setMax({
+        setMax(maxBudgetLabel + ", " + maxBudgetVal);
 
-        }); */
-
-        /* setAverage({
-          
-        }); */
+        setAverage(sum / (data.length - 1));
 
         setTotal(sum);
-      })
-      .catch((err) => {
+
+      }).catch((err) => {
         console.log(err);
       });
   }, []);
@@ -79,6 +89,8 @@ function DashboardPage() {
       <Menu />
       <section>
         <h1>[username]'s Budget Dashboard</h1>
+
+        <Link to="/add">Add Item to Budget</Link>
 
         <article className="pieContainer">
           {/* visualization 1: pie chart */}
@@ -93,24 +105,30 @@ function DashboardPage() {
         <article>
           {/* visualization 2: table */}
           <div>
-            <h1>table here</h1>
             <table className="budgetTable">
-              <tr>
-                <td>Budget Items</td>
-                <td>{budgetItemCount}</td>
-              </tr>
-              <tr>
-                <td>Highest Budget Item</td>
-                <td>14</td>
-              </tr>
-              <tr>
-                <td>Average Budget Amount</td>
-                <td>~~~~~</td>
-              </tr>
-              <tr>{/* TODO: bold this section */}
-                <td>Total Budget</td>
-                <td>{budgetTotal}</td>
-              </tr>
+              <thead>
+                <tr>
+                  <th colSpan={2}>Personal Budget Statistics</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="statHeader">Budget Items</td>
+                  <td>{budgetItemCount}</td>
+                </tr>
+                <tr>
+                  <td className="statHeader">Highest Budget Item</td>
+                  <td>{budgetMax}</td>
+                </tr>
+                <tr>
+                  <td className="statHeader">Average Budget Amount</td>
+                  <td>{budgetAvg}</td>
+                </tr>
+                <tr>
+                  <td className="statHeader">Total Budget</td>
+                  <td>{budgetTotal}</td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </article>

@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 function Menu() {
   const navigate = useNavigate();
-  console.log(window.location.pathname);
 
   function logOut() {
     localStorage.removeItem("jwt");
