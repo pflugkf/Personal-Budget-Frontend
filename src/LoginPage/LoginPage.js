@@ -22,7 +22,7 @@ function LoginPage() {
             const token = res.data.token;
             localStorage.setItem('jwt', token);
             //getDashboard();
-            navigate("/dashboard");
+            //navigate("/dashboard");
         } else {
           console.log("invalid");
         }
@@ -35,7 +35,8 @@ function LoginPage() {
         crossOrigin="anonymous" referrerPolicy="no-referrer">
       </script>
 
-      <h2>Log In to Personal Budget App</h2>
+      <h1 id="login-header">Log In</h1>
+      <p>Log in to see your personal budget dashboard page!</p>
 
       <div>
         <label htmlFor="username">Username</label>
@@ -47,9 +48,9 @@ function LoginPage() {
         <input type="text" id="password" name="password"></input>
       </div>
 
-      {/* <Link to="/home">Log In</Link> */}
+      {/* <Link to="/home" className="button" onClick={login}>Log In</Link> */}
       <button onClick={login}>Login</button>
-      <Link to="/signup">Sign Up</Link>
+      <Link to="/signup" className="button">Sign Up</Link>
     </div>
   );
 }

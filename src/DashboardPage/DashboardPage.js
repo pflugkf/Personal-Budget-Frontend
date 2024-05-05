@@ -90,7 +90,7 @@ function DashboardPage() {
       <section>
         <h1>[username]'s Budget Dashboard</h1>
 
-        <Link to="/add">Add Item to Budget</Link>
+        <Link to="/add" className="button">Add Item to Budget</Link>
 
         <article className="pieContainer">
           {/* visualization 1: pie chart */}

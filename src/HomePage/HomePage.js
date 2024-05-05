@@ -6,13 +6,13 @@ import {
 function HomePage() {
   //console.log("I've been rendered!");
   return (
-    <div>
-      <h1>Welcome to Personal Budget App!</h1>
+    <main className="homepageContainer">
+      <h1 id="homepage-header">Welcome to Personal Budget App!</h1>
       <p>Log in to see your personal budget dashboard page</p>
 
-      <Link to="/login">Log in</Link>
-      <Link to="/signup">Create Account</Link>
-    </div>
+      <Link to="/login" className="button">Log in</Link>
+      <Link to="/signup" className="button">Create Account</Link>
+    </main>
   );
 }
 

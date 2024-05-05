@@ -53,11 +53,12 @@ function AddItemPage() {
   }
 
   return (
-    <div>
+    <main>
+      <Menu />
       <h2>Add an Item to Your Personal Budget</h2>
 
       <div>
-        <label htmlFor="label">Label</label>
+        <label htmlFor="label">Budget Item</label>
         <input type="text" id="label" name="label"></input>
       </div>
 
@@ -72,7 +73,8 @@ function AddItemPage() {
       </div>
 
       <button onClick={add}>Add</button>
-    </div>
+      <Link to="/dashboard" className="button">Back</Link>
+    </main>
   );
 }
 
