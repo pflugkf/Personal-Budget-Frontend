@@ -61,22 +61,12 @@ function LoginPage() {
 
   function tokenHandler() {
     console.log("checking");
-    
+
     if (tokenCheck()) {
       console.log("token expired, logging out");
       clearInterval(tokenCheckTimer);
       localStorage.removeItem("jwt");
       navigate("/");
-      toast.warn('Logged out due to inactivity', {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light"
-        });
     }
   }
 
@@ -104,7 +94,8 @@ function LoginPage() {
       }
       return currentTime > expireTime;
     } else {
-      return true;
+      clearInterval(tokenCheckTimer);
+      //return true;
     }
   }
 

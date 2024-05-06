@@ -47,7 +47,7 @@ button:hover {
 }
 
 /* Headers CSS */
-#homepage-header, #login-header, #signup-header {
+#homepage-header, #login-header, #signup-header, #addItem-header {
   background-color:#568259;
   padding: 50px 0px;
   width: 100%;
@@ -148,7 +148,7 @@ button:hover {
 
 /* DashboardPage CSS */
 #dashboardContainer {
-  background-color: #CCFCCB;
+  background-color: #DFFEE3;
   margin-top: 88px;
   flex-direction: column;
 }
@@ -160,6 +160,16 @@ button:hover {
   margin: 0px 0px 40px 0px;
   padding: 20px;
   text-align: center;
+}
+
+#dashboard-content {
+  text-align: center;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #pieContainer {
@@ -200,6 +210,33 @@ thead th {
   margin: 50px 25px;
 }
 
+/*Add Item Page CSS*/
+#addItemContainer {
+  margin-top: 88px;
+  flex-direction: column;
+}
+
+#addItem-input {
+  margin: 50px;
+}
+
+#addItem-input-title input{
+  margin-left: 25px;
+}
+
+#addItem-input-color input{
+  margin-left: 38px;
+  margin-bottom: 5px;
+}
+
+#colorpicker {
+  margin-left: 110px;
+}
+
+#addItem-buttons {
+  margin-bottom: 50px;
+  text-align: center;
+}
 
 /* Footer CSS */
 .footer {

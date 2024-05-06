@@ -6,7 +6,7 @@ function Menu() {
 
   function logOut() {
     localStorage.removeItem("jwt");
-    navigate("/");
+    //navigate("/");
   }
 
   return (

@@ -13,13 +13,18 @@ import "react-toastify/dist/ReactToastify.css";
 function DashboardPage() {
   const navigate = useNavigate();
   const token = localStorage.getItem("jwt");
-  var tokenCheckTimer;
 
   const [budgetData, setData] = useState({ datasets: [] });
   const [budgetItemCount, setCount] = useState(0);
   const [budgetMax, setMax] = useState("");
   const [budgetAvg, setAverage] = useState(0);
   const [budgetTotal, setTotal] = useState(0);
+  const [expense, setExpense] = useState(0);
+
+  function calculate() {
+    var income = document.getElementById("income").value;
+    setExpense(income-budgetTotal);
+  }
 
   useEffect(() => {
     let data = [];
@@ -33,19 +38,18 @@ function DashboardPage() {
         },
       })
       .then(function (res) {
-        const jsonData = res.data.myContent.myBudget;
+        const tokenData = JSON.parse(atob(token.split(".")[1]));
+        console.log(tokenData);
+        var userName = tokenData.username;
+        document.getElementById("dashboard-header-text").innerHTML = userName + "'s Dashboard";
 
-        //console.log(jsonData);
+        const jsonData = res.data.myContent.myBudget;
 
         for (var i = 0; i < jsonData.length; i++) {
           labels.push(jsonData[i].title);
           data.push(jsonData[i].budget);
           colors.push(jsonData[i].color);
         }
-
-        //console.log(labels);
-        //console.log(colors);
-        //console.log(data);
 
         setData({
           datasets: [
@@ -99,58 +103,11 @@ function DashboardPage() {
       });
   }, []);
 
-  /* function tokenHandler() {
-    console.log("checking");
-    
-    if (tokenCheck(token)) {
-      console.log("token expired, logging out");
-      clearInterval(tokenCheckTimer);
-      localStorage.removeItem("jwt");
-      navigate("/");
-    }
-  }
-
-  function tokenCheck(token) {
-    var warningGiven = false;
-
-    if (token) {
-      const tokenData = JSON.parse(atob(token.split(".")[1]));
-      const expireTime = tokenData.exp * 1000;
-      const currentTime = Date.now();
-      console.log("expireTime: " + expireTime);
-      console.log("currentTime: " + currentTime);
-      if((expireTime - currentTime) <= 20000 && !warningGiven) {
-        console.log("20 second warning here");
-        toast.warn('20 seconds until logout', {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light"
-          });
-          warningGiven = true;
-      }
-      return currentTime > expireTime;
-    } else {
-      return true;
-    }
-  }
-
-  if(token) {
-    tokenCheckTimer = setInterval(tokenHandler, 5000);
-  } else {
-    clearInterval(tokenCheckTimer);
-  } */
-  
-
   return (
     <main id="dashboardContainer" className="container">
       <Menu />
       <section id="dashboard-header">
-        <h1>[username]'s Budget Dashboard</h1>
+        <h1 id="dashboard-header-text">[username]'s Budget Dashboard</h1>
       </section>
 
       <section id="dashboard-content">
@@ -161,19 +118,10 @@ function DashboardPage() {
         >
           Add Item to Budget
         </Link>
-        <article id="pieContainer">
-          {/* visualization 1: pie chart */}
-          <div>
-            <Pie
-              // type='pie'
-              data={budgetData}
-            />
-          </div>
-        </article>
 
-        <article>
+        <article className="row">
           {/* visualization 2: table */}
-          <div>
+          <figure>
             <table id="budgetTable">
               <thead>
                 <tr>
@@ -199,19 +147,28 @@ function DashboardPage() {
                 </tr>
               </tbody>
             </table>
-          </div>
+          </figure>
+
+          <article id="expense-input">
+            <label htmlFor="income">Enter your income here: </label>
+            <input type="number" id="income" name="income"></input>
+            <button onClick={calculate}>Enter</button>
+            <p>Your total earnings after expenses are: {expense}</p>
+          </article>
         </article>
 
-        <article>
-          {/* visualization 3: bar chart */}
-          <div id="barContainer">
+        <h3>Your Budget, Visualized</h3>
+
+        <article className="row">
+          {/* visualization 2: bar chart */}
+          <figure id="barContainer">
             <Bar
               data={budgetData}
               options={{
                 plugins: {
                   title: {
                     display: true,
-                    text: "Your Budget, Visualized",
+                    text: "Your Budget",
                   },
                   legend: {
                     display: false,
@@ -219,8 +176,18 @@ function DashboardPage() {
                 },
               }}
             />
-          </div>
+          </figure>
+
+          {/* visualization 3: pie chart */}
+          <figure id="pieContainer">
+            <Pie
+              // type='pie'
+              data={budgetData}
+            />
+          </figure>
         </article>
+
+        <article></article>
       </section>
 
       <ToastContainer />
