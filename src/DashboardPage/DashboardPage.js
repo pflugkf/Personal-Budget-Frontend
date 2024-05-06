@@ -21,6 +21,7 @@ function DashboardPage() {
   const [expense, setExpense] = useState(0);
 
   function calculate() {
+    refresh();
     var income = document.getElementById("income").value;
     setExpense(income-budgetTotal);
   }
@@ -148,14 +149,8 @@ function DashboardPage() {
       </section>
 
       <section id="dashboard-content">
-        <Link
-          to="/add"
-          className="button"
-          onClick={refresh}
-          aria-label={"Link to add budget item"}
-        >
-          Add Item to Budget
-        </Link>
+        <Link to="/add" className="button" onClick={refresh}
+          aria-label={"Link to add budget item"}>Add Item to Budget</Link>
 
         <article className="row">
           {/* visualization 1: table */}

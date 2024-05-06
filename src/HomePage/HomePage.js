@@ -1,15 +1,56 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function HomePage() {
   const navigate = useNavigate();
 
   function nav() {
     if(localStorage.getItem("jwt")){
+      refresh();
       navigate("/dashboard");
     } else {
       navigate("/login");
     }
+  }
+
+  function refresh() {
+    const refreshToken = localStorage.getItem("refresher");
+
+    const data = {
+      refresh: refreshToken,
+      currentToken: localStorage.getItem("jwt"),
+    };
+
+    axios.post("http://localhost:3000/api/refresh", data, {
+        'Content-Encoding': 'gzip'
+      }).then((res) => {
+        console.log(res);
+
+        if (res && res.data && res.data.success) {
+          const newToken = res.data.token;
+          localStorage.removeItem("jwt");
+          localStorage.setItem("jwt", newToken);
+
+        } else {
+          console.log("invalid");
+        }
+      }).catch((error) => {
+            console.log(error.response);
+
+            toast.error(error.response.data.err, {
+              position: "top-center",
+              autoClose: 4000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              });
+      });
   }
 
   return (
@@ -33,7 +74,7 @@ function HomePage() {
           <Link to="/signup" className="button" aria-label={"Link to Signup page"}>Create Account</Link>
         </article>
       </section>
-      
+      <ToastContainer />
     </main>
   );
 }
