@@ -6,7 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background-color: #f1fffa;
+  background-color: mintcream;
   color: #464e47;
 }
 
@@ -15,31 +15,112 @@ code {
     monospace;
 }
 
-h1 {
-  text-align: center;
-  color:#39563B;
-}
-
-h2 {
-  text-align: center;
-  color:crimson;
-}
-
-.button {
-  background-color: #ccfccb;
-  text-decoration: none;
-  color: #464e47;
-}
-
-.button:hover {
-  background-color: #96e6b3;
-}
-
-/* Menu CSS */
 .container {
   display: flex;
 }
 
+.button, button {
+  background-color: #76B486;
+  text-decoration: none;
+  color: white;
+  margin: 10px;
+  padding: 10px;
+}
+
+button {
+  border: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  font-size: 16px;
+  
+}
+
+.button:hover {
+  background-color: #96E6B3;
+  color: #464e47;
+}
+
+button:hover {
+  background-color: #96E6B3;
+  color: #464e47;
+}
+
+/* Headers CSS */
+#homepage-header, #login-header, #signup-header {
+  background-color:#568259;
+  padding: 50px 0px;
+  width: 100%;
+  color: #CCfCCB;
+  text-align: center;
+}
+
+/* Homepage CSS */
+#homepageContainer {
+  text-align: center;
+  flex-direction: column;
+  justify-content:space-around;
+  align-items: center;
+}
+
+#homepage-header p {
+  color: #96E6B3;
+}
+
+#homepage-content {
+  width: 100%;
+  height: 600px;
+}
+
+#homepage-info {
+  padding: 50px;
+}
+
+#homepage-links {
+  padding: 30px;
+}
+
+/*Login CSS*/
+#loginpageContainer {
+  flex-direction: column;
+  align-items: center;
+}
+
+#login-input {
+  margin: 50px 0px 50px 0px;
+}
+
+#login-input-pass input {
+  margin-left: 5px;
+}
+
+#login-buttons {
+  margin-bottom: 50px;
+}
+
+/*Signup CSS*/
+#signuppageContainer {
+  flex-direction: column;
+  align-items: center;
+}
+
+#signup-input {
+  margin: 50px;
+}
+
+#signup-input-name input {
+  margin-left: 29px;
+}
+
+#signup-input-pass input {
+  margin-left: 5px;
+}
+
+#signup-buttons {
+  margin-bottom: 50px;
+}
+
+/* Menu CSS */
 #nav-bar {
   position: fixed;
   top: 0;
@@ -66,16 +147,31 @@ h2 {
 }
 
 /* DashboardPage CSS */
-.pieContainer {
-  background-color: aquamarine;
-  border: 5px dotted blue;
+#dashboardContainer {
+  background-color: #CCFCCB;
+  margin-top: 88px;
+  flex-direction: column;
+}
+
+#dashboard-header {
+  background-color:#568259;
+  color: #CCfCCB;
+  width: 100%;
+  margin: 0px 0px 40px 0px;
+  padding: 20px;
+  text-align: center;
+}
+
+#pieContainer {
+  background-color: #F1FFFA;
+  border: 3px solid #464E47;
   width: 500px;
   height: 500px;
   margin: 50px 25px;
 }
 
-.budgetTable {
-  background-color: blueviolet;
+#budgetTable {
+  background-color: #4E6850;
   margin: 50px 25px;
 }
 
@@ -93,21 +189,23 @@ th, td {
 }
 
 thead th {
-  background-color: cornflowerblue;
+  background-color: #76B486;
 }
 
-.barContainer {
+#barContainer {
+  background-color: #F1FFFA;
   border: 5px solid black;
   width: 500px;
   height: 300px;
   margin: 50px 25px;
 }
 
+
 /* Footer CSS */
 .footer {
   position: absolute;
   width: 100%;
-  background-color: #568259;
+  background-color: #4E6850;
   color: #ccfccb;
   text-align: right;
 }

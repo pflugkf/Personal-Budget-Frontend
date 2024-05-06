@@ -6,14 +6,14 @@ function Menu() {
 
   function logOut() {
     localStorage.removeItem("jwt");
-    //navigate("/");
+    navigate("/");
   }
 
   return (
     <div>
       <nav id="nav-bar" className="container">
-        <Link to="/home" className="nav-link" aria-label={"Link to About page"}>Home</Link>
-        <Link to="/dashboard" className="nav-link" aria-label={"Link to About page"}>Dashboard</Link>
+        <Link to="/" className="nav-link" aria-label={"Link to Home page"}>Home</Link>
+        <Link to="/dashboard" className="nav-link" aria-label={"Link to Dashboard"}>Dashboard</Link>
         <Link to="/" className="nav-link" onClick={logOut} aria-label={"Link to Log Out of Account"}>Logout</Link>
       </nav>
     </div>

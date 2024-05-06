@@ -1,57 +1,139 @@
 import React from "react";
 import axios from "axios";
-import {
-  Link,
-  useNavigate
-} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function LoginPage() {
   const navigate = useNavigate();
+  var tokenCheckTimer;
 
   function login() {
     const data = {
-        username: document.getElementById('username').value,
-        password: document.getElementById('password').value,
+      username: document.getElementById("username").value,
+      password: document.getElementById("password").value,
     };
-    
-    axios.post('http://localhost:3000/api/login', data).then(res => {
+
+    if (data.username === "" || data.password === "") {
+      toast.error('Please fill out all fields', {
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+    } else {
+      axios.post("http://localhost:3000/api/login", data).then((res) => {
         console.log(res);
-        document.getElementById('username').value = '';
-        document.getElementById('password').value = '';
+        document.getElementById("username").value = "";
+        document.getElementById("password").value = "";
         if (res && res.data && res.data.success) {
-            const token = res.data.token;
-            localStorage.setItem('jwt', token);
-            //getDashboard();
-            //navigate("/dashboard");
+          const userToken = res.data.token;
+          localStorage.setItem("jwt", userToken);
+          
+          navigate("/dashboard");
+          
+          tokenCheckTimer = setInterval(tokenHandler, 5000);
+
         } else {
           console.log("invalid");
         }
-    });
-}
+      }).catch((error) => {
+            console.log(error.response);
+
+            toast.error(error.response.data.err, {
+              position: "top-center",
+              autoClose: 4000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              });
+      });
+    }
+  }
+
+  function tokenHandler() {
+    console.log("checking");
+    
+    if (tokenCheck()) {
+      console.log("token expired, logging out");
+      clearInterval(tokenCheckTimer);
+      localStorage.removeItem("jwt");
+      navigate("/");
+      toast.warn('Logged out due to inactivity', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light"
+        });
+    }
+  }
+
+  var warningGiven = false;
+  function tokenCheck() {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      const tokenData = JSON.parse(atob(token.split(".")[1]));
+      const expireTime = tokenData.exp * 1000;
+      const currentTime = Date.now();
+      console.log("Time remaining: " + (expireTime - currentTime));
+      if((expireTime - currentTime) <= 20000 && warningGiven === false) {
+        console.log("20 second warning here");
+        toast.warn('20 seconds until logout', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light"
+          });
+          warningGiven = true;
+      }
+      return currentTime > expireTime;
+    } else {
+      return true;
+    }
+  }
+
   return (
-    <div>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js"
-        integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ=="
-        crossOrigin="anonymous" referrerPolicy="no-referrer">
-      </script>
+    <main id="loginpageContainer" className="container">
+      <section id="login-header">
+        <h1>Log In</h1>
+        <p>Log in to see your personal budget dashboard page!</p>
+      </section>
 
-      <h1 id="login-header">Log In</h1>
-      <p>Log in to see your personal budget dashboard page!</p>
+      <section id="login-input">
+        <article id="login-input-user">
+          <label htmlFor="username">Username: </label>
+          <input type="text" id="username" name="username"></input>
+        </article>
 
-      <div>
-        <label htmlFor="username">Username</label>
-        <input type="text" id="username" name="username"></input>
-      </div>
+        <article id="login-input-pass">
+          <label htmlFor="password">Password: </label>
+          <input type="password" id="password" name="password"></input>
+        </article>
+      </section>
 
-      <div>
-        <label htmlFor="password">Password</label>
-        <input type="text" id="password" name="password"></input>
-      </div>
+      <section id="login-buttons">
+        <button onClick={login} aria-label={"Button to log in and enter Dashboard page"}>Login</button>
+        <Link to="/signup" className="button" aria-label={"Link to Signup page"}>Sign Up</Link>
+      </section>
 
-      {/* <Link to="/home" className="button" onClick={login}>Log In</Link> */}
-      <button onClick={login}>Login</button>
-      <Link to="/signup" className="button">Sign Up</Link>
-    </div>
+      <ToastContainer />
+    </main>
   );
 }
 

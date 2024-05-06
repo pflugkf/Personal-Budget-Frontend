@@ -1,26 +1,30 @@
 import React, { useEffect, useState } from "react";
-import {
-  Link,
-  useNavigate
-} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+
 import Menu from "../Menu/Menu";
+
 import { Chart } from "chart.js/auto";
 import { Pie, Bar } from "react-chartjs-2";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function DashboardPage() {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("jwt");
+  var tokenCheckTimer;
+
   const [budgetData, setData] = useState({ datasets: [] });
   const [budgetItemCount, setCount] = useState(0);
   const [budgetMax, setMax] = useState("");
   const [budgetAvg, setAverage] = useState(0);
   const [budgetTotal, setTotal] = useState(0);
 
-  let data = [];
-  let labels = [];
-  let colors = [];
-
   useEffect(() => {
-    const token = localStorage.getItem("jwt");
+    let data = [];
+    let labels = [];
+    let colors = [];
 
     axios
       .get("http://localhost:3000/api/dashboard", {
@@ -31,7 +35,7 @@ function DashboardPage() {
       .then(function (res) {
         const jsonData = res.data.myContent.myBudget;
 
-        console.log(jsonData);
+        //console.log(jsonData);
 
         for (var i = 0; i < jsonData.length; i++) {
           labels.push(jsonData[i].title);
@@ -41,7 +45,7 @@ function DashboardPage() {
 
         //console.log(labels);
         //console.log(colors);
-        console.log(data);
+        //console.log(data);
 
         setData({
           datasets: [
@@ -61,38 +65,103 @@ function DashboardPage() {
         for (let i = 0; i < data.length; i++) {
           sum += data[i];
 
-          if(data[i] === maxBudgetVal) {
-            maxBudgetIndex = i; 
+          if (data[i] === maxBudgetVal) {
+            maxBudgetIndex = i;
           }
         }
 
         maxBudgetLabel = labels[maxBudgetIndex];
 
-        //console.log("Sum of all budget values: " + sum);
-        //console.log("Average: " + sum / (data.length - 1));
-
         setCount(data.length);
 
-        setMax(maxBudgetLabel + ", " + maxBudgetVal);
-
-        setAverage(sum / (data.length - 1));
+        if (data.length > 0) {
+          setMax(maxBudgetLabel + ", " + maxBudgetVal);
+          setAverage(sum / (data.length - 1));
+        } else {
+          setMax("None");
+          setAverage(0);
+        }
 
         setTotal(sum);
-
-      }).catch((err) => {
+      })
+      .catch((err) => {
         console.log(err);
+        toast.error(err.response.data.err, {
+          position: "top-center",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       });
   }, []);
 
+  /* function tokenHandler() {
+    console.log("checking");
+    
+    if (tokenCheck(token)) {
+      console.log("token expired, logging out");
+      clearInterval(tokenCheckTimer);
+      localStorage.removeItem("jwt");
+      navigate("/");
+    }
+  }
+
+  function tokenCheck(token) {
+    var warningGiven = false;
+
+    if (token) {
+      const tokenData = JSON.parse(atob(token.split(".")[1]));
+      const expireTime = tokenData.exp * 1000;
+      const currentTime = Date.now();
+      console.log("expireTime: " + expireTime);
+      console.log("currentTime: " + currentTime);
+      if((expireTime - currentTime) <= 20000 && !warningGiven) {
+        console.log("20 second warning here");
+        toast.warn('20 seconds until logout', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light"
+          });
+          warningGiven = true;
+      }
+      return currentTime > expireTime;
+    } else {
+      return true;
+    }
+  }
+
+  if(token) {
+    tokenCheckTimer = setInterval(tokenHandler, 5000);
+  } else {
+    clearInterval(tokenCheckTimer);
+  } */
+  
+
   return (
-    <main>
+    <main id="dashboardContainer" className="container">
       <Menu />
-      <section>
+      <section id="dashboard-header">
         <h1>[username]'s Budget Dashboard</h1>
+      </section>
 
-        <Link to="/add" className="button">Add Item to Budget</Link>
-
-        <article className="pieContainer">
+      <section id="dashboard-content">
+        <Link
+          to="/add"
+          className="button"
+          aria-label={"Link to add budget item"}
+        >
+          Add Item to Budget
+        </Link>
+        <article id="pieContainer">
           {/* visualization 1: pie chart */}
           <div>
             <Pie
@@ -105,7 +174,7 @@ function DashboardPage() {
         <article>
           {/* visualization 2: table */}
           <div>
-            <table className="budgetTable">
+            <table id="budgetTable">
               <thead>
                 <tr>
                   <th colSpan={2}>Personal Budget Statistics</th>
@@ -134,10 +203,9 @@ function DashboardPage() {
         </article>
 
         <article>
-          {/* visualization 3: bar chart? */}
-          <div className="barContainer">
+          {/* visualization 3: bar chart */}
+          <div id="barContainer">
             <Bar
-              // type='pie'
               data={budgetData}
               options={{
                 plugins: {
@@ -154,6 +222,8 @@ function DashboardPage() {
           </div>
         </article>
       </section>
+
+      <ToastContainer />
     </main>
   );
 }
