@@ -19,6 +19,7 @@ function AddItemPage() {
     axios
       .get("http://localhost:3000/api/verify", {
         headers: { Authorization: `Bearer ${token}` },
+        'Content-Encoding': 'gzip'
       })
       .then(function (res) {
         console.log(res);
@@ -51,7 +52,9 @@ function AddItemPage() {
             });
           } else {
             axios
-              .post("http://localhost:3000/api/newdoc", data)
+              .post("http://localhost:3000/api/newdoc", data, {
+                'Content-Encoding': 'gzip'
+              })
               .then((res) => {
                 console.log(res);
 

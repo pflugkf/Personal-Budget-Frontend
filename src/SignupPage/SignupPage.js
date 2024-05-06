@@ -29,7 +29,9 @@ function SignupPage() {
       });
     } else {
       axios
-        .post("http://localhost:3000/api/signup", data)
+        .post("http://localhost:3000/api/signup", data, {
+          'Content-Encoding': 'gzip'
+        })
         .then((res) => {
           console.log(res);
           document.getElementById("name").value = "";

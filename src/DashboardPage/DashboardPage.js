@@ -26,6 +26,43 @@ function DashboardPage() {
     setExpense(income-budgetTotal);
   }
 
+  function refresh() {
+    const refreshToken = localStorage.getItem("refresher");
+
+    const data = {
+      refresh: refreshToken,
+      currentToken: localStorage.getItem("jwt"),
+    };
+
+    axios.post("http://localhost:3000/api/refresh", data, {
+        'Content-Encoding': 'gzip'
+      }).then((res) => {
+        console.log(res);
+
+        if (res && res.data && res.data.success) {
+          const newToken = res.data.token;
+          localStorage.removeItem("jwt");
+          localStorage.setItem("jwt", newToken);
+
+        } else {
+          console.log("invalid");
+        }
+      }).catch((error) => {
+            console.log(error.response);
+
+            toast.error(error.response.data.err, {
+              position: "top-center",
+              autoClose: 4000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              });
+      });
+  }
+
   useEffect(() => {
     let data = [];
     let labels = [];
@@ -36,6 +73,7 @@ function DashboardPage() {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        'Content-Encoding': 'gzip'
       })
       .then(function (res) {
         const tokenData = JSON.parse(atob(token.split(".")[1]));
@@ -114,6 +152,7 @@ function DashboardPage() {
         <Link
           to="/add"
           className="button"
+          onClick={refresh}
           aria-label={"Link to add budget item"}
         >
           Add Item to Budget
@@ -186,8 +225,6 @@ function DashboardPage() {
             />
           </figure>
         </article>
-
-        <article></article>
       </section>
 
       <ToastContainer />

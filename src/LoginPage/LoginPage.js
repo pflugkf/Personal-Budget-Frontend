@@ -27,13 +27,17 @@ function LoginPage() {
         theme: "light",
         });
     } else {
-      axios.post("http://localhost:3000/api/login", data).then((res) => {
+      axios.post("http://localhost:3000/api/login", data, {
+        'Content-Encoding': 'gzip'
+      }).then((res) => {
         console.log(res);
         document.getElementById("username").value = "";
         document.getElementById("password").value = "";
         if (res && res.data && res.data.success) {
           const userToken = res.data.token;
+          const refreshToken = res.data.refresh;
           localStorage.setItem("jwt", userToken);
+          localStorage.setItem("refresher", refreshToken);
           
           navigate("/dashboard");
           
