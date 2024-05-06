@@ -14,7 +14,7 @@ function HomePage() {
 
   return (
     <main id="homepageContainer" className="container">
-      <section id="homepage-header">
+      <section id="homepage-header" role="banner">
         <h1>Welcome to Personal Budget App!</h1>
         <p>Your ticket to more savings</p>
       </section>
@@ -29,7 +29,6 @@ function HomePage() {
         <article id="homepage-links">
           <h4>Click below to go to your personal dashboard page.</h4>
           <p>New to the app? Sign up today!</p>
-          {/* <Link to="/login" className="button">Go to Dashboard</Link> */}
           <button onClick={nav} aria-label={"Link to Dashboard page"}>Go to Dashboard</button>
           <Link to="/signup" className="button" aria-label={"Link to Signup page"}>Create Account</Link>
         </article>

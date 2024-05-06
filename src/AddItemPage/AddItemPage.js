@@ -22,22 +22,15 @@ function AddItemPage() {
         'Content-Encoding': 'gzip'
       })
       .then(function (res) {
-        console.log(res);
-        console.log(res.status);
-        console.log(res.data);
-        console.log(res.data.content);
-
         if (res.status === 200) {
           var colorHex = "#" + document.getElementById("color").value;
-          console.log(colorHex);
+          
           const data = {
             title: document.getElementById("label").value,
             budget: parseInt(document.getElementById("budget").value),
             color: colorHex,
             user: res.data.content,
           };
-
-          console.log(data);
 
           if (data.title === "" || data.budget === "" || data.color === "") {
             toast.error("Please fill out all fields", {
@@ -54,8 +47,7 @@ function AddItemPage() {
             axios
               .post("http://localhost:3000/api/newdoc", data, {
                 'Content-Encoding': 'gzip'
-              })
-              .then((res) => {
+              }).then((res) => {
                 console.log(res);
 
                 document.getElementById("label").value = "";
@@ -93,7 +85,7 @@ function AddItemPage() {
   return (
     <main id="addItemContainer" className="container">
       <Menu />
-      <section id="addItem-header">
+      <section id="addItem-header" role="banner">
         <h2>Add an Item to Your Personal Budget</h2>
       </section>
 
@@ -110,7 +102,6 @@ function AddItemPage() {
 
         <article id="addItem-input-color">
           <label htmlFor="color">Item Color: </label>
-          {/* <input type="text" id="color" name="color"></input> */}
           <HexColorInput color={color} onChange={setColor} id="color"/>
           <HexColorPicker color={color} onChange={setColor} id="colorpicker"/>
         </article>

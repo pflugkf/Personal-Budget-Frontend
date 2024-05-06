@@ -16,6 +16,7 @@ function LoginPage() {
     };
 
     if (data.username === "" || data.password === "") {
+
       toast.error('Please fill out all fields', {
         position: "top-center",
         autoClose: 4000,
@@ -26,6 +27,7 @@ function LoginPage() {
         progress: undefined,
         theme: "light",
         });
+
     } else {
       axios.post("http://localhost:3000/api/login", data, {
         'Content-Encoding': 'gzip'
@@ -81,9 +83,7 @@ function LoginPage() {
       const tokenData = JSON.parse(atob(token.split(".")[1]));
       const expireTime = tokenData.exp * 1000;
       const currentTime = Date.now();
-      console.log("Time remaining: " + (expireTime - currentTime));
       if((expireTime - currentTime) <= 20000 && warningGiven === false) {
-        console.log("20 second warning here");
         toast.warn('20 seconds until logout', {
           position: "top-center",
           autoClose: 5000,
@@ -99,13 +99,12 @@ function LoginPage() {
       return currentTime > expireTime;
     } else {
       clearInterval(tokenCheckTimer);
-      //return true;
     }
   }
 
   return (
     <main id="loginpageContainer" className="container">
-      <section id="login-header">
+      <section id="login-header" role="banner">
         <h1>Log In</h1>
         <p>Log in to see your personal budget dashboard page!</p>
       </section>

@@ -11,7 +11,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function DashboardPage() {
-  const navigate = useNavigate();
   const token = localStorage.getItem("jwt");
 
   const [budgetData, setData] = useState({ datasets: [] });
@@ -77,7 +76,7 @@ function DashboardPage() {
       })
       .then(function (res) {
         const tokenData = JSON.parse(atob(token.split(".")[1]));
-        console.log(tokenData);
+        
         var userName = tokenData.username;
         document.getElementById("dashboard-header-text").innerHTML = userName + "'s Dashboard";
 
@@ -118,7 +117,7 @@ function DashboardPage() {
 
         if (data.length > 0) {
           setMax(maxBudgetLabel + ", " + maxBudgetVal);
-          setAverage(sum / (data.length - 1));
+          setAverage((sum / (data.length - 1)).toFixed(2));
         } else {
           setMax("None");
           setAverage(0);
@@ -144,7 +143,7 @@ function DashboardPage() {
   return (
     <main id="dashboardContainer" className="container">
       <Menu />
-      <section id="dashboard-header">
+      <section id="dashboard-header" role="banner">
         <h1 id="dashboard-header-text">[username]'s Budget Dashboard</h1>
       </section>
 
@@ -159,7 +158,7 @@ function DashboardPage() {
         </Link>
 
         <article className="row">
-          {/* visualization 2: table */}
+          {/* visualization 1: table */}
           <figure>
             <table id="budgetTable">
               <thead>
@@ -220,7 +219,6 @@ function DashboardPage() {
           {/* visualization 3: pie chart */}
           <figure id="pieContainer">
             <Pie
-              // type='pie'
               data={budgetData}
             />
           </figure>
