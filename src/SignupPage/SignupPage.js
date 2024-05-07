@@ -29,7 +29,7 @@ function SignupPage() {
       });
     } else {
       axios
-        .post("http://localhost:3000/api/signup", data, {
+        .post("https://lionfish-app-x87ad.ondigitalocean.app/api/signup", data, {
           'Content-Encoding': 'gzip'
         })
         .then((res) => {
@@ -48,6 +48,7 @@ function SignupPage() {
           }
         })
         .catch((error) => {
+          console.log(error);
           console.log(error.response);
 
           toast.error(error.response.data.err, {
@@ -84,7 +85,7 @@ function SignupPage() {
       const currentTime = Date.now();
       console.log("Time remaining: " + (expireTime - currentTime));
       if (expireTime - currentTime <= 20000 && warningGiven === false) {
-        console.log("20 second warning here");
+        console.log("20 second logout warning");
         toast.warn("20 seconds until logout", {
           position: "top-center",
           autoClose: 5000,

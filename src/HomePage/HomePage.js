@@ -24,7 +24,7 @@ function HomePage() {
       currentToken: localStorage.getItem("jwt"),
     };
 
-    axios.post("http://localhost:3000/api/refresh", data, {
+    axios.post("https://lionfish-app-x87ad.ondigitalocean.app/api/refresh", data, {
         'Content-Encoding': 'gzip'
       }).then((res) => {
         console.log(res);

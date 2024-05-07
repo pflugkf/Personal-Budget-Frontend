@@ -34,7 +34,7 @@ function DashboardPage() {
       currentToken: localStorage.getItem("jwt"),
     };
 
-    axios.post("http://localhost:3000/api/refresh", data, {
+    axios.post("https://lionfish-app-x87ad.ondigitalocean.app/api/refresh", data, {
         'Content-Encoding': 'gzip'
       }).then((res) => {
         console.log(res);
@@ -69,7 +69,7 @@ function DashboardPage() {
     let colors = [];
 
     axios
-      .get("http://localhost:3000/api/dashboard", {
+      .get("https://lionfish-app-x87ad.ondigitalocean.app/api/dashboard", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

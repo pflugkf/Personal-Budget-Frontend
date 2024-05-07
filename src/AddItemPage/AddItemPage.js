@@ -18,7 +18,7 @@ function AddItemPage() {
     const token = localStorage.getItem("jwt");
 
     axios
-      .get("http://localhost:3000/api/verify", {
+      .get("https://lionfish-app-x87ad.ondigitalocean.app/api/verify", {
         headers: { Authorization: `Bearer ${token}` },
         'Content-Encoding': 'gzip'
       })
@@ -46,7 +46,7 @@ function AddItemPage() {
             });
           } else {
             axios
-              .post("http://localhost:3000/api/newdoc", data, {
+              .post("https://lionfish-app-x87ad.ondigitalocean.app/api/newdoc", data, {
                 'Content-Encoding': 'gzip'
               }).then((res) => {
                 console.log(res);
@@ -91,7 +91,7 @@ function AddItemPage() {
       currentToken: localStorage.getItem("jwt"),
     };
 
-    axios.post("http://localhost:3000/api/refresh", data, {
+    axios.post("https://lionfish-app-x87ad.ondigitalocean.app/api/refresh", data, {
         'Content-Encoding': 'gzip'
       }).then((res) => {
         console.log(res);

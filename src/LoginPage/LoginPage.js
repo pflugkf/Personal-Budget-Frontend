@@ -29,7 +29,7 @@ function LoginPage() {
         });
 
     } else {
-      axios.post("http://localhost:3000/api/login", data, {
+      axios.post("https://lionfish-app-x87ad.ondigitalocean.app/api/login", data, {
         'Content-Encoding': 'gzip'
       }).then((res) => {
         console.log(res);
